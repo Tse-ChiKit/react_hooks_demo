@@ -3,6 +3,7 @@ import "./App.css";
 import { useState, useEffect, useMemo } from "react";
 
 function App() {
+  const [a, setA] = useState(1); //variable to trigger page refresh
   const [users, setUsers] = useState(null);
   const [searchKey, setSearchKey] = useState("");
 
@@ -14,7 +15,14 @@ function App() {
     doFetch();
   }, []);
 
+  const clicktoRefresh = () => {
+    setA(a + 1);
+  };
+
+  //won't call if only A value changes
   const usersToShow = useMemo(() => {
+    console.log("users :", users);
+
     if (!users) return null;
 
     return users.data.filter((user) => {
@@ -22,8 +30,11 @@ function App() {
     });
   }, [users, searchKey]);
 
+  console.log("page refreshed !!");
+
   return (
     <div>
+      <button onClick={clicktoRefresh}>Click to Trigger Refresh</button>
       <input
         type="text"
         value={searchKey}
